@@ -3,12 +3,7 @@ const Todo = require("../models/Todo");
 
 // Check if a required field is left blank
 const checkBody = (req, res, next) => {
-  if (
-    !req.body.description ||
-    !req.body.deadline ||
-    req.body.done == null ||
-    req.body.done == undefined
-  ) {
+  if (!req.body.description || !req.body.deadline) {
     return res.status(400).json({
       message: "Error! Description, deadline and done must not be empty.",
     });

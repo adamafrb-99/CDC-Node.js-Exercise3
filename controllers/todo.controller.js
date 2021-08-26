@@ -20,7 +20,7 @@ exports.findAll = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const { description, deadline, done } = req.body;
+    const { description, deadline } = req.body;
     let snapshot;
     let snapshotToSave;
 
@@ -41,7 +41,7 @@ exports.create = async (req, res) => {
     const todo = new Todo({
       description,
       deadline,
-      done,
+      done: false,
       snapshot: snapshot ? snapshotToSave : null,
     });
 
@@ -105,11 +105,13 @@ exports.delete = async (req, res) => {
   try {
     const selectedTodo = res.selectedTodo;
 
-    fs.unlink(selectedTodo.snapshot, (err) => {
-      if (err) {
-        return res.json({ message: err.message });
-      }
-    });
+    if (selectedTodo.snapshot) {
+      fs.unlink(selectedTodo.snapshot, (err) => {
+        if (err) {
+          return res.json({ message: err.message });
+        }
+      });
+    }
 
     await selectedTodo.remove();
 

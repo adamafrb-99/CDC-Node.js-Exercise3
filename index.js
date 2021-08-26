@@ -5,6 +5,11 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const mongoose = require("mongoose");
 
+const cors = require("cors");
+const corsOption = {
+  origin: process.env.CORS,
+};
+
 const app = express();
 const port = process.env.PORT || 3000;
 const dbUrl = process.env.DATABASE_URL;
@@ -13,6 +18,7 @@ const fileUpload = require("express-fileupload");
 app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOption));
 app.use(
   fileUpload({
     createParentPath: true,
